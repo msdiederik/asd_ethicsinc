@@ -1,7 +1,7 @@
-package com.ethicsinc.server.session.port.adapter.persistence;
+package com.ethicsinc.server.stakeholders.port.adapter.persistence;
 
-import com.ethicsinc.server.session.domain.model.concern.Concern;
-import com.ethicsinc.server.session.domain.model.concern.ConcernId;
+import com.ethicsinc.server.stakeholders.domain.model.concern.Concern;
+import com.ethicsinc.server.stakeholders.domain.model.concern.ConcernId;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

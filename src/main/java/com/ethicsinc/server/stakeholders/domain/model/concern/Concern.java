@@ -1,7 +1,8 @@
-package com.ethicsinc.server.session.domain.model.concern;
+package com.ethicsinc.server.stakeholders.domain.model.concern;
 
 import com.ethicsinc.server.session.domain.model.player.Player;
-import com.ethicsinc.server.session.port.adapter.persistence.ConcernRepository;
+import com.ethicsinc.server.session.domain.model.player.PlayerId;
+import com.ethicsinc.server.stakeholders.port.adapter.rest.SessionRestClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,20 +14,22 @@ public class Concern {
     private final String description;
     private float averagePriority;
     private final List<Priority> priorities;
-    private final ConcernRepository concernRepository;
+    private final SessionRestClient sessionRestClient;
 
-    public Concern(ConcernId id, String name, String category, String description, ConcernRepository concernRepository) {
+    public Concern(ConcernId id, String name, String category, String description, SessionRestClient sessionRestClient) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.description = description;
         this.priorities = new ArrayList<Priority>();
-        this.concernRepository = concernRepository;
+        this.sessionRestClient = sessionRestClient;
     }
 
-    public void givePriority(Player player, Priority priority) {
+    public void giveWeight(Player player, int weight) {
+        Priority priority = new Priority(player, weight);
         priorities.add(priority);
         calculateAverage();
+        notifyPlayers(player.getId());
     }
 
     private void calculateAverage() {
@@ -34,12 +37,12 @@ public class Concern {
         for(Priority priority : priorities) {
             totalWeight += priority.getWeight();
         }
-        averagePriority = totalWeight / priorities.size();
+        averagePriority = (float)totalWeight / (float)priorities.size();
     }
 
     //Notify
-    public void notifyPlayer() {
-
+    public void notifyPlayers(PlayerId playerId) {
+       sessionRestClient.notifyPlayers(playerId.value());
     }
 
     public ConcernDTO mapToDTO() {

@@ -1,4 +1,4 @@
-package com.ethicsinc.server.session.domain.model.concern;
+package com.ethicsinc.server.stakeholders.domain.model.concern;
 
 import com.ethicsinc.server.BaseId;
 
