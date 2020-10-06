@@ -1,6 +1,7 @@
 package com.ethicsinc.server.session.domain.model.session;
 
 import com.ethicsinc.server.session.domain.model.chatmessage.ChatMessage;
+import com.ethicsinc.server.session.domain.model.chatmessage.ChatMessageFactory;
 import com.ethicsinc.server.session.domain.model.chatmessage.ChatMessageId;
 import com.ethicsinc.server.session.domain.model.player.Player;
 import com.ethicsinc.server.session.domain.model.player.PlayerDTO;
@@ -22,11 +23,12 @@ public class Session {
     private final List<ChatMessageId> chat;
     private final PlayerRepository playerRepository;
     private final ChatMessageRepository chatMessageRepository;
+    private final ChatMessageFactory chatMessageFactory;
     private final SimpMessagingTemplate simpMessagingTemplate;
 
     Session(SessionId id,
                    PlayerRepository playerRepository,
-                   ChatMessageRepository chatMessageRepository,
+                   ChatMessageRepository chatMessageRepository, ChatMessageFactory chatMessageFactory,
                    SimpMessagingTemplate simpMessagingTemplate) {
         this.id = id;
         this.code = this.generateSessionCode();
@@ -34,6 +36,7 @@ public class Session {
         this.chat = new ArrayList<>();
         this.playerRepository = playerRepository;
         this.chatMessageRepository = chatMessageRepository;
+        this.chatMessageFactory = chatMessageFactory;
         this.simpMessagingTemplate = simpMessagingTemplate;
 
         GameRestService gameRestService = new GameRestService();
@@ -114,5 +117,17 @@ public class Session {
         }
 
         return new SessionDTO(this.code, playerDTOS, chatMessageDTOS);
+    }
+
+    public void notifyPlayers(PlayerId playerId) {
+        ChatMessageId id = chatMessageRepository.nextId();
+        ChatMessage chatMessage = chatMessageFactory.build(id, playerId, "Player joined the game");
+        chatMessageRepository.save(chatMessage);
+
+        try {
+            this.sendMessage(chatMessage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

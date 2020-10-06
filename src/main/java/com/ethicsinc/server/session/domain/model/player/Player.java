@@ -41,8 +41,8 @@ public class Player {
     public void joinSession(String sessionCode) {
         Session session = sessionRepository.getBySessionCode(sessionCode);
         session.join(this);
+        session.notifyPlayers(this.getId());
         this.sessionRepository.save(session);
-        sendChatMessage("Joined the game");
     }
 
     public void sendChatMessage(String message) {
