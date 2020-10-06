@@ -1,6 +1,7 @@
 package com.ethicsinc.server.session.domain.model.session;
 
 import com.ethicsinc.server.session.domain.model.chatmessage.ChatMessage;
+import com.ethicsinc.server.session.domain.model.chatmessage.ChatMessageFactory;
 import com.ethicsinc.server.session.domain.model.chatmessage.ChatMessageId;
 import com.ethicsinc.server.session.domain.model.player.Player;
 import com.ethicsinc.server.session.domain.model.player.PlayerDTO;
@@ -8,7 +9,7 @@ import com.ethicsinc.server.session.domain.model.player.PlayerId;
 import com.ethicsinc.server.session.domain.model.chatmessage.ChatMessageDTO;
 import com.ethicsinc.server.session.port.adapter.persistence.ChatMessageRepository;
 import com.ethicsinc.server.session.port.adapter.persistence.PlayerRepository;
-import com.ethicsinc.server.session.port.adapter.rest.GameRestService;
+import com.ethicsinc.server.session.port.adapter.rest.GameRestClient;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.ArrayList;
@@ -22,22 +23,25 @@ public class Session {
     private final List<ChatMessageId> chat;
     private final PlayerRepository playerRepository;
     private final ChatMessageRepository chatMessageRepository;
+    private final ChatMessageFactory chatMessageFactory;
     private final SimpMessagingTemplate simpMessagingTemplate;
 
     Session(SessionId id,
-                   PlayerRepository playerRepository,
-                   ChatMessageRepository chatMessageRepository,
-                   SimpMessagingTemplate simpMessagingTemplate) {
+            PlayerRepository playerRepository,
+            ChatMessageRepository chatMessageRepository,
+            ChatMessageFactory chatMessageFactory,
+            SimpMessagingTemplate simpMessagingTemplate,
+            GameRestClient gameRestClient) {
         this.id = id;
         this.code = this.generateSessionCode();
         this.players = new ArrayList<>();
         this.chat = new ArrayList<>();
         this.playerRepository = playerRepository;
         this.chatMessageRepository = chatMessageRepository;
+        this.chatMessageFactory = chatMessageFactory;
         this.simpMessagingTemplate = simpMessagingTemplate;
 
-        GameRestService gameRestService = new GameRestService();
-        gameRestService.createGame();
+        gameRestClient.createGame();
     }
 
     public void join(Player player) {
@@ -50,13 +54,11 @@ public class Session {
         int targetStringLength = 10;
         Random random = new Random();
 
-        String generatedString = random.ints(leftLimit, rightLimit + 1)
+        return random.ints(leftLimit, rightLimit + 1)
                 .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
                 .limit(targetStringLength)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
-
-        return generatedString;
     }
 
     public SessionId getId() {
@@ -87,7 +89,7 @@ public class Session {
     public void sendMessage(ChatMessage chatMessage){
         this.chat.add(chatMessage.getId());
         System.out.println("Now "+this.chat.size()+" messages in chat");
-        //this.simpMessagingTemplate.convertAndSend("/message/"+this.code, chatMessage.mapToDTO());
+        this.simpMessagingTemplate.convertAndSend("/message/"+this.code, chatMessage.mapToDTO());
     }
 
     public String getCode(){
@@ -116,5 +118,17 @@ public class Session {
         }
 
         return new SessionDTO(this.code, playerDTOS, chatMessageDTOS);
+    }
+
+    public void notifyPlayers(PlayerId playerId) {
+        ChatMessageId id = chatMessageRepository.nextId();
+        ChatMessage chatMessage = chatMessageFactory.build(id, playerId, "Player joined the game");
+        chatMessageRepository.save(chatMessage);
+
+        try {
+            this.sendMessage(chatMessage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

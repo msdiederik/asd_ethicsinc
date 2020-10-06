@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SessionRepository extends BaseRepository<Session, SessionId>{
-    public Session getByPlayerId(PlayerId playerId) throws Exception;
+    Session getByPlayerId(PlayerId playerId) throws Exception;
+    Session getBySessionCode(String code);
 }

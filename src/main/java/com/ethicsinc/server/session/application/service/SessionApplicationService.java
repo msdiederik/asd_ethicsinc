@@ -4,7 +4,8 @@ import com.ethicsinc.server.session.domain.model.player.Player;
 import com.ethicsinc.server.session.domain.model.player.PlayerFactory;
 import com.ethicsinc.server.session.domain.model.player.PlayerId;
 import com.ethicsinc.server.session.domain.model.session.Session;
-import com.ethicsinc.server.session.port.adapter.persistence.*;
+import com.ethicsinc.server.session.port.adapter.persistence.PlayerRepository;
+import com.ethicsinc.server.session.port.adapter.persistence.SessionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,8 +16,8 @@ public class SessionApplicationService {
     private final SessionRepository sessionRepository;
     private final PlayerFactory playerFactory;
 
-    public SessionApplicationService(MemoryPlayerRepository memoryPlayerRepository,
-                                     MemorySessionRepository memorySessionRepository,
+    public SessionApplicationService(PlayerRepository memoryPlayerRepository,
+                                     SessionRepository memorySessionRepository,
                                      PlayerFactory playerFactory) {
         this.playerRepository = memoryPlayerRepository;
         this.sessionRepository = memorySessionRepository;
@@ -28,6 +29,17 @@ public class SessionApplicationService {
         Player player = playerFactory.build(playerId, username);
         player.createSession();
         playerRepository.save(player);
+    }
+
+    public void joinSession (String username, String sessionCode) {
+        PlayerId playerId = playerRepository.nextId();
+        Player player = playerFactory.build(playerId,username);
+        player.joinSession(sessionCode);
+        playerRepository.save(player);
+    }
+
+    public Session getSessionBySessionCode(String sessionCode) {
+        return this.sessionRepository.getBySessionCode(sessionCode);
     }
 
     public List<Session> getAllSessions(){

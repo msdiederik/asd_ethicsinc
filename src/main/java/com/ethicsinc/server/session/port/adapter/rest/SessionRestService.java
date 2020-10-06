@@ -1,8 +1,6 @@
 package com.ethicsinc.server.session.port.adapter.rest;
 
 import com.ethicsinc.server.session.application.service.SessionApplicationService;
-import com.ethicsinc.server.session.domain.model.player.Player;
-import com.ethicsinc.server.session.domain.model.player.PlayerDTO;
 import com.ethicsinc.server.session.domain.model.session.Session;
 import com.ethicsinc.server.session.domain.model.session.SessionDTO;
 import org.springframework.web.bind.annotation.*;
@@ -34,5 +32,20 @@ public class SessionRestService {
         }
 
         return sessionDTOS;
+    }
+
+    @GetMapping("/getOne")
+    public SessionDTO getSession(@RequestParam String sessionCode) {
+        Session session = this.sessionApplicationService.getSessionBySessionCode(sessionCode);
+        return session.mapToDTO();
+    }
+
+    @PutMapping("/")
+    public void joinSession(@RequestParam String username,@RequestParam String sessionCode) {
+        sessionApplicationService.joinSession(username,sessionCode);
+    }
+
+    @PostMapping("/notify")
+    public void notifyPlayer(@RequestParam long playerId) {
     }
 }
