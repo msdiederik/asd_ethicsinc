@@ -17,7 +17,7 @@ public class SessionRestClient {
 
     public void notifyPlayers(long playerId){
         try {
-            this.restTemplate.postForLocation(new URI(this.url + "/" + playerId), 1);
+            this.restTemplate.postForLocation(new URI(this.url + "?playerId="+playerId), 1);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

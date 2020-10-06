@@ -45,7 +45,8 @@ public class SessionRestService {
         sessionApplicationService.joinSession(username,sessionCode);
     }
 
-    @PostMapping("/notify")
+    @GetMapping("/notify")
     public void notifyPlayer(@RequestParam long playerId) {
+        System.out.println("notifying players");
     }
 }

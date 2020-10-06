@@ -1,10 +1,8 @@
 package com.ethicsinc.server.stakeholders.application.service;
 
-import com.ethicsinc.server.session.domain.model.session.Session;
 import com.ethicsinc.server.stakeholders.domain.model.concern.*;
-import com.ethicsinc.server.session.domain.model.player.Player;
-import com.ethicsinc.server.session.domain.model.player.PlayerId;
 
+import com.ethicsinc.server.stakeholders.domain.model.player.PlayerId;
 import com.ethicsinc.server.stakeholders.port.adapter.persistence.ConcernRepository;
 import com.ethicsinc.server.session.port.adapter.persistence.PlayerRepository;
 import com.ethicsinc.server.stakeholders.port.adapter.persistence.MemoryConcernRepository;
@@ -34,7 +32,7 @@ public class ConcernApplicationService {
     public void giveWeight(long playerId, long concernId, int weight) {
         try {
             Concern concern = concernRepository.getById(new ConcernId(concernId));
-            Player sender = playerRepository.getById(new PlayerId(playerId));
+            PlayerId sender = new PlayerId(playerId);
             concern.giveWeight(sender, weight);
             concernRepository.save(concern);
         } catch (Exception e) {

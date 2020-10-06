@@ -1,7 +1,7 @@
 package com.ethicsinc.server.stakeholders.domain.model.concern;
 
-import com.ethicsinc.server.session.domain.model.player.Player;
-import com.ethicsinc.server.session.domain.model.player.PlayerId;
+
+import com.ethicsinc.server.stakeholders.domain.model.player.PlayerId;
 import com.ethicsinc.server.stakeholders.port.adapter.rest.SessionRestClient;
 
 import java.util.ArrayList;
@@ -25,11 +25,11 @@ public class Concern {
         this.sessionRestClient = sessionRestClient;
     }
 
-    public void giveWeight(Player player, int weight) {
+    public void giveWeight(PlayerId player, int weight) {
         Priority priority = new Priority(player, weight);
         priorities.add(priority);
         calculateAverage();
-        notifyPlayers(player.getId());
+        notifyPlayers(player);
     }
 
     private void calculateAverage() {

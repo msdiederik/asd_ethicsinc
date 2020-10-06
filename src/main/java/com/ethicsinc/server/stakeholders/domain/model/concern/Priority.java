@@ -1,17 +1,17 @@
 package com.ethicsinc.server.stakeholders.domain.model.concern;
 
-import com.ethicsinc.server.session.domain.model.player.Player;
+import com.ethicsinc.server.stakeholders.domain.model.player.PlayerId;
 
 public class Priority {
-    private final Player player;
+    private final PlayerId player;
     private final int weight;
 
-    public Priority(Player player, int weight) {
+    public Priority(PlayerId player, int weight) {
         this.player = player;
         this.weight = weight;
     }
 
-    public Player getPlayer() {
+    public PlayerId getPlayer() {
         return player;
     }
 
