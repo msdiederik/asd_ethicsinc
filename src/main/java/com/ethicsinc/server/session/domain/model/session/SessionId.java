@@ -1,4 +1,9 @@
 package com.ethicsinc.server.session.domain.model.session;
 
-public class SessionId {
+import com.ethicsinc.server.BaseId;
+
+public class SessionId extends BaseId {
+    public SessionId(long id) {
+        super(id);
+    }
 }
