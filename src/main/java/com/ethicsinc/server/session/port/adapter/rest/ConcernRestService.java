@@ -1,10 +1,11 @@
 package com.ethicsinc.server.session.port.adapter.rest;
 
 import com.ethicsinc.server.session.application.service.ConcernApplicationService;
+import com.ethicsinc.server.session.domain.model.concern.Priority;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/session")
+@RequestMapping("/api/concern")
 public class ConcernRestService {
     private final ConcernApplicationService concernApplicationService;
 
@@ -12,8 +13,8 @@ public class ConcernRestService {
         this.concernApplicationService = concernApplicationService;
     }
 
-    @PostMapping("/message")
-    public void sendMessage(@RequestParam long playerId, @RequestParam long concernId, @RequestParam float weight){
-        concernApplicationService.weighConcern(playerId, concernId, weight);
+    @PostMapping("/give_priority")
+    public void givePriority(@RequestParam long playerId, @RequestParam long concernId, @RequestParam Priority priority){
+        concernApplicationService.givePriority(playerId, concernId, priority);
     }
 }
