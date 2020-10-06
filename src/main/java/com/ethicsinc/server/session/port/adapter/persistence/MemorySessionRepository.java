@@ -1,5 +1,6 @@
 package com.ethicsinc.server.session.port.adapter.persistence;
 
+import com.ethicsinc.server.session.domain.model.player.PlayerId;
 import com.ethicsinc.server.session.domain.model.session.Session;
 import com.ethicsinc.server.session.domain.model.session.SessionId;
 import org.springframework.stereotype.Repository;
@@ -18,9 +19,9 @@ public class MemorySessionRepository implements SessionRepository{
     }
 
     @Override
-    public long nextId() {
+    public SessionId nextId() {
         this.id++;
-        return this.id;
+        return new SessionId(this.id);
     }
 
     @Override
@@ -47,5 +48,15 @@ public class MemorySessionRepository implements SessionRepository{
             }
         }
         throw new Exception("No session found with id: "+sessionId);
+    }
+
+    @Override
+    public Session getByPlayerId(PlayerId playerId) throws Exception {
+        for(Session session : sessions) {
+            if(session.isInSession(playerId)){
+                return session;
+            }
+        }
+        throw new Exception("No session found with playerId: "+playerId.value());
     }
 }

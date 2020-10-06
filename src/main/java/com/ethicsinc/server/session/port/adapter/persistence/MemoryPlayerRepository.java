@@ -19,9 +19,9 @@ public class MemoryPlayerRepository implements PlayerRepository{
 
 
     @Override
-    public long nextId() {
+    public PlayerId nextId() {
         this.id++;
-        return this.id;
+        return new PlayerId(this.id);
     }
 
     @Override

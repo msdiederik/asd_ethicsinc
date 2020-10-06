@@ -18,9 +18,9 @@ public class MemoryChatMessageRepository implements ChatMessageRepository{
     }
 
     @Override
-    public long nextId() {
+    public ChatMessageId nextId() {
         this.id++;
-        return this.id;
+        return new ChatMessageId(this.id);
     }
 
     @Override
