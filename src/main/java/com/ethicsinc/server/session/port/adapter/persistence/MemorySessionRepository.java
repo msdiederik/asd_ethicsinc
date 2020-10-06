@@ -48,4 +48,14 @@ public class MemorySessionRepository implements SessionRepository{
         }
         return null;
     }
+
+    @Override
+    public Session findByCode(String code) {
+        for(Session session : this.sessions) {
+            if(session.getCode().equals(code)) {
+                return session;
+            }
+        }
+        return null;
+    }
 }

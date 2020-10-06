@@ -1,6 +1,7 @@
 package com.ethicsinc.server.session.domain.model.player;
 
 import com.ethicsinc.server.session.domain.model.session.Session;
+import com.ethicsinc.server.session.port.adapter.persistence.MemorySessionRepository;
 import com.ethicsinc.server.session.port.adapter.persistence.PlayerRepository;
 import com.ethicsinc.server.session.port.adapter.persistence.SessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,12 @@ public class Player {
     public void createSession(){
         long sessionId = sessionRepository.nextId();
         Session session = new Session(sessionId, playerRepository);
+        session.join(this);
+        this.sessionRepository.save(session);
+    }
+
+    public void joinSession(String sessionCode) {
+        Session session = sessionRepository.findByCode(sessionCode);
         session.join(this);
         this.sessionRepository.save(session);
     }

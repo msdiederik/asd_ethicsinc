@@ -27,6 +27,13 @@ public class SessionApplicationService {
         playerRepository.save(player);
     }
 
+    public void joinSession (String username, String sessionCode) {
+        long playerId = playerRepository.nextId();
+        Player player = new Player(playerId, username, sessionRepository, playerRepository);
+        player.joinSession(sessionCode);
+        playerRepository.save(player);
+    }
+
     public List<Session> getAllSessions(){
         return sessionRepository.getAll();
     }
