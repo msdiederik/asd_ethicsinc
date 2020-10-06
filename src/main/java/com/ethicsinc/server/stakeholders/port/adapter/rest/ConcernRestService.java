@@ -30,15 +30,11 @@ public class ConcernRestService {
     @GetMapping("/")
     public List<ConcernDTO> getConcerns() {
         List<Concern> concerns = concernApplicationService.getAllConcerns();
-        for(Concern concern : concerns) {
-            System.out.println(concern.getId() + " priority: " + concern.getPriority());
-        }
         List<ConcernDTO> concernDTOS = new ArrayList<ConcernDTO>();
 
         for(Concern concern : concerns) {
             concernDTOS.add(concern.mapToDTO());
         }
-
         return concernDTOS;
     }
 }
