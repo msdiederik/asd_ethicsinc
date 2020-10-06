@@ -88,7 +88,7 @@ public class Session {
     public void sendMessage(ChatMessage chatMessage){
         this.chat.add(chatMessage.getId());
         System.out.println("Now "+this.chat.size()+" messages in chat");
-        //this.simpMessagingTemplate.convertAndSend("/message/"+this.code, chatMessage.mapToDTO());
+        this.simpMessagingTemplate.convertAndSend("/message/"+this.code, chatMessage.mapToDTO());
     }
 
     public String getCode(){
