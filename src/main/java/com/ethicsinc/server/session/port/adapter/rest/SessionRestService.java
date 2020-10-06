@@ -33,4 +33,9 @@ public class SessionRestService {
 
         return sessionDTOS;
     }
+
+    @PutMapping("/")
+    public void joinSession(@RequestParam String username,@RequestParam String sessionCode) {
+        sessionApplicationService.joinSession(username,sessionCode);
+    }
 }

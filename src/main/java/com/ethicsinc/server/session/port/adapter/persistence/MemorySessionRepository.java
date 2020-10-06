@@ -59,4 +59,14 @@ public class MemorySessionRepository implements SessionRepository{
         }
         throw new Exception("No session found with playerId: "+playerId.value());
     }
+
+    @Override
+    public Session getBySessionCode(String code) {
+        for(Session session : this.sessions) {
+            if(session.getCode().equals(code)) {
+                return session;
+            }
+        }
+        return null;
+    }
 }

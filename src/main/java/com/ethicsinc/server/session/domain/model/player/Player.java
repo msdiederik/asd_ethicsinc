@@ -9,6 +9,7 @@ import com.ethicsinc.server.session.domain.model.session.SessionId;
 import com.ethicsinc.server.session.port.adapter.persistence.ChatMessageRepository;
 import com.ethicsinc.server.session.port.adapter.persistence.SessionRepository;
 
+
 public class Player {
     private final PlayerId id;
     private String username;
@@ -34,6 +35,13 @@ public class Player {
         SessionId sessionId = sessionRepository.nextId();
         Session session = sessionFactory.build(sessionId);
         session.join(this);
+        this.sessionRepository.save(session);
+    }
+
+    public void joinSession(String sessionCode) {
+        Session session = sessionRepository.getBySessionCode(sessionCode);
+        session.join(this);
+        session.notifyPlayers(this.getId());
         this.sessionRepository.save(session);
     }
 

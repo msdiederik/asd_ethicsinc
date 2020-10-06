@@ -3,7 +3,6 @@ package com.ethicsinc.server.session.port.adapter.rest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
 import java.net.URI;
 
 @Service
