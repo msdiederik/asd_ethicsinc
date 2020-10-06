@@ -6,22 +6,25 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 
 @Service
-public class GameRestService {
+public class GameRestClient {
     @Value("${gameContext.location}")
-    private String url;
+    private String location;
 
     @Value("${server.port}")
     private String port;
 
+    @Value("${server.address}")
+    private String address;
+
     private RestTemplate restTemplate;
 
-    public GameRestService() {
+    public GameRestClient() {
         this.restTemplate = new RestTemplate();
     }
 
     public void createGame(){
         try {
-            this.restTemplate.postForLocation(new URI(this.url), 1);
+            this.restTemplate.postForLocation(new URI("http://"+address +":"+ port+"/"+location), 1);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

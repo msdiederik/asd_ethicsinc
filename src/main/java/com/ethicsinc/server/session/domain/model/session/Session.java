@@ -9,7 +9,7 @@ import com.ethicsinc.server.session.domain.model.player.PlayerId;
 import com.ethicsinc.server.session.domain.model.chatmessage.ChatMessageDTO;
 import com.ethicsinc.server.session.port.adapter.persistence.ChatMessageRepository;
 import com.ethicsinc.server.session.port.adapter.persistence.PlayerRepository;
-import com.ethicsinc.server.session.port.adapter.rest.GameRestService;
+import com.ethicsinc.server.session.port.adapter.rest.GameRestClient;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class Session {
             ChatMessageRepository chatMessageRepository,
             ChatMessageFactory chatMessageFactory,
             SimpMessagingTemplate simpMessagingTemplate,
-            GameRestService gameRestService) {
+            GameRestClient gameRestClient) {
         this.id = id;
         this.code = this.generateSessionCode();
         this.players = new ArrayList<>();
@@ -41,7 +41,7 @@ public class Session {
         this.chatMessageFactory = chatMessageFactory;
         this.simpMessagingTemplate = simpMessagingTemplate;
 
-        gameRestService.createGame();
+        gameRestClient.createGame();
     }
 
     public void join(Player player) {

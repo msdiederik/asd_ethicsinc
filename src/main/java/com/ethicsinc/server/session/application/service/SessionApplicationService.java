@@ -38,6 +38,10 @@ public class SessionApplicationService {
         playerRepository.save(player);
     }
 
+    public Session getSessionBySessionCode(String sessionCode) {
+        return this.sessionRepository.getBySessionCode(sessionCode);
+    }
+
     public List<Session> getAllSessions(){
         return sessionRepository.getAll();
     }

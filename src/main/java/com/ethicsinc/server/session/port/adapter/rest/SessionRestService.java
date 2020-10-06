@@ -34,8 +34,18 @@ public class SessionRestService {
         return sessionDTOS;
     }
 
+    @GetMapping("/getOne")
+    public SessionDTO getSession(@RequestParam String sessionCode) {
+        Session session = this.sessionApplicationService.getSessionBySessionCode(sessionCode);
+        return session.mapToDTO();
+    }
+
     @PutMapping("/")
     public void joinSession(@RequestParam String username,@RequestParam String sessionCode) {
         sessionApplicationService.joinSession(username,sessionCode);
+    }
+
+    @PostMapping("/notify")
+    public void notifyPlayer(@RequestParam long playerId) {
     }
 }
