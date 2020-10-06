@@ -1,18 +1,22 @@
 package com.ethicsinc.server.session.port.adapter.rest;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URLEncoder;
 
+@Service
 public class GameRestService {
-    private final String url;
+    @Value("${gameContext.location}")
+    private String url;
+
+    @Value("${server.port}")
+    private String port;
+
     private RestTemplate restTemplate;
 
     public GameRestService() {
-        this.url = "http://localhost:8080/api/game/";
         this.restTemplate = new RestTemplate();
     }
 
