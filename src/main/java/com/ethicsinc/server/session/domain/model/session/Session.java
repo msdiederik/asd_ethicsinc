@@ -27,9 +27,11 @@ public class Session {
     private final SimpMessagingTemplate simpMessagingTemplate;
 
     Session(SessionId id,
-                   PlayerRepository playerRepository,
-                   ChatMessageRepository chatMessageRepository, ChatMessageFactory chatMessageFactory,
-                   SimpMessagingTemplate simpMessagingTemplate) {
+            PlayerRepository playerRepository,
+            ChatMessageRepository chatMessageRepository,
+            ChatMessageFactory chatMessageFactory,
+            SimpMessagingTemplate simpMessagingTemplate,
+            GameRestService gameRestService) {
         this.id = id;
         this.code = this.generateSessionCode();
         this.players = new ArrayList<>();
@@ -39,7 +41,6 @@ public class Session {
         this.chatMessageFactory = chatMessageFactory;
         this.simpMessagingTemplate = simpMessagingTemplate;
 
-        GameRestService gameRestService = new GameRestService();
         gameRestService.createGame();
     }
 
