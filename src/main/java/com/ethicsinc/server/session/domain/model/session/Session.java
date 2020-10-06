@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Random;
 
 public class Session {
-    private SessionId id;
-    private String code;
-    private List<PlayerId> players;
-    private List<ChatMessageId> chat;
-    private PlayerRepository playerRepository;
+    private final SessionId id;
+    private final String code;
+    private final List<PlayerId> players;
+    private final List<ChatMessageId> chat;
+    private final PlayerRepository playerRepository;
 
     public Session(long id, PlayerRepository playerRepository) {
         this.id = new SessionId(id);
@@ -54,8 +54,13 @@ public class Session {
     public List<Player> getPlayers() {
         List<Player> players = new ArrayList<>();
         for(PlayerId playerId : this.players) {
-            Player player = this.playerRepository.getById(playerId);
-            players.add(player);
+            try {
+                Player player = this.playerRepository.getById(playerId);
+                players.add(player);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
         }
         return players;
     }

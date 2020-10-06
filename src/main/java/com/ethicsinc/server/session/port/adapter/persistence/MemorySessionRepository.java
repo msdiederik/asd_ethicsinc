@@ -40,12 +40,12 @@ public class MemorySessionRepository implements SessionRepository{
     }
 
     @Override
-    public Session getById(SessionId sessionId) {
+    public Session getById(SessionId sessionId) throws Exception {
         for(Session session : this.sessions) {
             if(session.getId() == sessionId){
                 return session;
             }
         }
-        return null;
+        throw new Exception("No session found with id: "+sessionId);
     }
 }

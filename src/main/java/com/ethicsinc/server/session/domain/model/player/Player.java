@@ -6,7 +6,7 @@ import com.ethicsinc.server.session.port.adapter.persistence.SessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class Player {
-    private PlayerId id;
+    private final PlayerId id;
     private String username;
     private final SessionRepository sessionRepository;
     private final PlayerRepository playerRepository;

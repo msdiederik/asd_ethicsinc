@@ -6,5 +6,5 @@ public interface BaseRepository<T, ID> {
     public long nextId();
     public void save(T entity);
     public List<T> getAll();
-    public T getById(ID id);
+    public T getById(ID id) throws Exception;
 }

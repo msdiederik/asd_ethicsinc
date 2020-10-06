@@ -15,6 +15,21 @@ public class PlayerApplicationService {
     }
 
     public Player getPlayerById(PlayerId playerId) {
-        return playerRepository.getById(playerId);
+        Player player = null;
+        try {
+             player = playerRepository.getById(playerId);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return player;
+    }
+
+    public void sendMessage(long playerId, String message) {
+        try {
+            Player sender = playerRepository.getById(new PlayerId(playerId));
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

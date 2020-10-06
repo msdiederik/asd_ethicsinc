@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class MemoryPlayerRepository implements PlayerRepository{
@@ -42,13 +41,14 @@ public class MemoryPlayerRepository implements PlayerRepository{
     }
 
     @Override
-    public Player getById(PlayerId playerId) {
+    public Player getById(PlayerId playerId) throws Exception {
 
         for (Player player : this.players) {
-            if (player.getId() == playerId) {
+            if (player.getId().equals(playerId)) {
                 return player;
             }
         }
-        return null;
+
+        throw new Exception("No player found with id: "+playerId);
     }
 }
