@@ -7,7 +7,11 @@ public class BaseId {
         this.id = id;
     }
 
-    public long getId() {
+    public long value() {
         return id;
+    }
+
+    public boolean equals(BaseId rhs){
+        return this.id == rhs.value();
     }
 }

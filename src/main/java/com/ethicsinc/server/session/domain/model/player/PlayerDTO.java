@@ -1,4 +1,4 @@
-package com.ethicsinc.server.session.port.adapter.rest;
+package com.ethicsinc.server.session.domain.model.player;
 
 import java.io.Serializable;
 
