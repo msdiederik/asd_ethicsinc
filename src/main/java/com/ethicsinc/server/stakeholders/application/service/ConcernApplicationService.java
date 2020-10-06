@@ -29,7 +29,7 @@ public class ConcernApplicationService {
         concernRepository.save(concern);
     }
 
-    public void giveWeight(long playerId, long concernId, int weight) {
+    public void weighConcern(long playerId, long concernId, int weight) {
         try {
             Concern concern = concernRepository.getById(new ConcernId(concernId));
             PlayerId sender = new PlayerId(playerId);

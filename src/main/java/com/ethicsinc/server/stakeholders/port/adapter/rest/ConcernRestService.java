@@ -17,9 +17,9 @@ public class ConcernRestService {
         this.concernApplicationService = concernApplicationService;
     }
 
-    @PostMapping("/give_weight")
-    public void giveWeight(@RequestParam long playerId, @RequestParam long concernId, @RequestParam int weight){
-        concernApplicationService.giveWeight(playerId, concernId, weight);
+    @PostMapping("/weigh_concern")
+    public void weighConcern(@RequestParam long playerId, @RequestParam long concernId, @RequestParam int weight){
+        concernApplicationService.weighConcern(playerId, concernId, weight);
     }
 
     @PostMapping("/select_concern")
